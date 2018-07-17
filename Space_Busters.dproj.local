@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/09/11 11:40:01.000.121,=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\GroupedItems1.pas</Transaction>
+    <Transaction>2015/09/11 11:40:01.000.470,=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\SplitItemDetail1.pas</Transaction>
+    <Transaction>2015/09/16 12:26:36.000.410,=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/09/16 12:29:03.000.409,C:\Users\Pedro Henrique\Documents\DelphiProjects\GodOfSpace\Desk\uPrincipal.pas=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/09/16 12:29:03.000.409,C:\Users\Pedro Henrique\Documents\DelphiProjects\GodOfSpace\Desk\uPrincipal.dfm=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2015/09/16 12:29:31.000.881,C:\Users\Pedro Henrique\Documents\DelphiProjects\GodOfSpace\Desk\God_of_Space.dproj=C:\Users\Pedro Henrique\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2015/09/16 15:14:49.000.022,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\God_of_Space.dproj=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\Space_Pursuit.dproj</Transaction>
+    <Transaction>2015/09/24 01:29:03.000.126,=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\Unit1.pas</Transaction>
+    <Transaction>2015/09/24 01:30:48.000.608,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\Unit1.pas=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\uSonsWave.pas</Transaction>
+    <Transaction>2015/09/24 01:44:53.000.292,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\uSonsWave.pas=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\TSonsWave.pas</Transaction>
+    <Transaction>2015/09/24 01:49:21.000.625,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\TSonsWave.pas=</Transaction>
+    <Transaction>2015/09/24 01:55:44.000.762,=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\Unit1.pas</Transaction>
+    <Transaction>2015/09/24 01:57:26.000.439,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\uSonsWave.pas=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpacePursuit\Unit1.pas</Transaction>
+    <Transaction>2015/10/02 23:00:40.000.461,C:\Users\Pedro Henrique\Documents\DelphiProjects\SpaceBusters\Space_Busters.dproj=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpaceBusters\Space_Pursuit.dproj</Transaction>
+    <Transaction>2015/10/03 03:26:36.000.923,=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpaceBusters\Unit1.pas</Transaction>
+    <Transaction>2015/10/03 03:27:04.000.942,=C:\Users\Pedro Henrique\Documents\DelphiProjects\SpaceBusters\uSobre.pas</Transaction>
+  </Transactions>
+</BorlandProject>

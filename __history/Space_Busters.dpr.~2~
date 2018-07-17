@@ -1,0 +1,16 @@
+program Space_Busters;
+
+uses
+  Vcl.Forms,
+  uPrincipal in 'uPrincipal.pas' {frmPrincipal},
+  uSobre in 'uSobre.pas' {FormSobre};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TFormSobre, FormSobre);
+  Application.Run;
+end.

@@ -1,0 +1,52 @@
+unit UnitSobre;
+
+interface
+
+uses WinApi.Windows, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls;
+
+type
+  TFormSobre = class(TForm)
+    Panel1: TPanel;
+    ProgramIcon: TImage;
+    ProductName: TLabel;
+    Version: TLabel;
+    Copyright: TLabel;
+    Comments: TLabel;
+    OKButton: TButton;
+    procedure OKButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormSobre: TFormSobre;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitPrincipal;
+
+procedure TFormSobre.FormCreate(Sender: TObject);
+begin
+  FormPrincipal.Enabled := false;
+end;
+
+procedure TFormSobre.FormDestroy(Sender: TObject);
+begin
+  FormPrincipal.Enabled := true;
+  FormPrincipal.SetFocus;
+end;
+
+procedure TFormSobre.OKButtonClick(Sender: TObject);
+begin
+  Self.Destroy;
+end;
+
+end.
+ 

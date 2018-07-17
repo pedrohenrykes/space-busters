@@ -1,0 +1,769 @@
+unit uPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Winapi.MMSystem, Winapi.ShellApi,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage,
+  Vcl.StdCtrls, Vcl.ComCtrls, Winapi.Commctrl;
+
+type
+  TfrmPrincipal = class(TForm)
+    imgMiniBoss: TImage;
+    imgPlayer: TImage;
+    imgEspaco01: TImage;
+    tmrColisao: TTimer;
+    imgEnemy01: TImage;
+    imgEspaco02: TImage;
+    imgTiro01: TImage;
+    imgTiro02: TImage;
+    imgTiro03: TImage;
+    imgTiro04: TImage;
+    imgTiro05: TImage;
+    imgTiro06: TImage;
+    imgTiro07: TImage;
+    imgTiro08: TImage;
+    imgTiro09: TImage;
+    imgTiro10: TImage;
+    imgEnemy02: TImage;
+    imgEnemy03: TImage;
+    imgEnemy04: TImage;
+    tmrBatalha: TTimer;
+    lblScore: TLabel;
+    barLife: TProgressBar;
+    lblLife: TLabel;
+    lblLevel: TLabel;
+    lblAlive: TLabel;
+    imgEnemy05: TImage;
+    btnNewGame: TButton;
+    btnQuitGame: TButton;
+    btnAbout: TButton;
+    tmrGameOver: TTimer;
+    imgLogo: TImage;
+    lblGameOver: TLabel;
+    tmrDisparo: TTimer;
+    tmrJogador: TTimer;
+    tmrEspaco: TTimer;
+    lblPressSpace: TLabel;
+    lblHighScore: TLabel;
+    procedure tmrColisaoTimer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tmrBatalhaTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnQuitGameClick(Sender: TObject);
+    procedure btnNewGameClick(Sender: TObject);
+    procedure tmrGameOverTimer(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure tmrEspacoTimer(Sender: TObject);
+    procedure tmrJogadorTimer(Sender: TObject);
+    procedure tmrDisparoTimer(Sender: TObject);
+    procedure btnAboutClick(Sender: TObject);
+  private
+    { Private declarations }
+    function colisao(Jogador, Inimigo: TImage): boolean;
+    function atingir(Disparo, Alvo: TImage): boolean;
+    procedure recomecarJogo(Key: Char);
+    procedure ocultar();
+    procedure atirar();
+    procedure moverDisparo();
+    procedure moverEspaco();
+    procedure moverJogador();
+    procedure novaPartida();
+    procedure batalhar();
+    procedure atingido();
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+  Alive, Score, Level: Integer;
+
+implementation
+
+{$R *.dfm}
+
+uses uSobre;
+
+// verifica se o inimigo bateu no player
+function TfrmPrincipal.colisao(Jogador, Inimigo: TImage): boolean;
+begin
+  if (Jogador.Left + Jogador.Width < Inimigo.Left) or
+    (Jogador.Left > Inimigo.Width + Inimigo.Left) or
+    (Jogador.Top + Jogador.Height < Inimigo.Top) or
+    (Jogador.Top > Inimigo.Height + Inimigo.Top) then
+    Result := false
+  else
+    Result := true;
+end;
+
+// verifica se o disparo atingiu o inimigo
+function TfrmPrincipal.atingir(Disparo, Alvo: TImage): boolean;
+begin
+  if (Disparo.Left + Disparo.Width < Alvo.Left) or
+    (Disparo.Left > Alvo.Width + Alvo.Left) or
+    (Disparo.Top + Disparo.Height < Alvo.Top) or
+    (Disparo.Top > Alvo.Height + Alvo.Top) then
+    Result := false
+  else
+  begin
+    if Disparo.Visible = true then
+    begin
+      Disparo.Visible := false;
+      Result := true;
+    end
+    else
+      Result := false
+  end;
+end;
+
+// funcão responsável por engatilhar a munição.
+procedure TfrmPrincipal.atirar();
+begin
+  if (GetKeyState(VK_SPACE) < 0) then
+  begin
+    SndPlaySound('songs/PlasmaShot.wav', SND_ASYNC);
+    if imgTiro01.Visible = false then
+    begin
+      imgTiro01.Left := imgPlayer.Left + 34;
+      imgTiro01.Top := imgPlayer.Top;
+      imgTiro01.Visible := true;
+    end
+    else if imgTiro02.Visible = false then
+    begin
+      imgTiro02.Left := imgPlayer.Left + 34;
+      imgTiro02.Top := imgPlayer.Top;
+      imgTiro02.Visible := true;
+    end
+    else if imgTiro03.Visible = false then
+    begin
+      imgTiro03.Left := imgPlayer.Left + 34;
+      imgTiro03.Top := imgPlayer.Top;
+      imgTiro03.Visible := true;
+    end
+    else if imgTiro04.Visible = false then
+    begin
+      imgTiro04.Left := imgPlayer.Left + 34;
+      imgTiro04.Top := imgPlayer.Top;
+      imgTiro04.Visible := true;
+    end
+    else if imgTiro05.Visible = false then
+    begin
+      imgTiro05.Left := imgPlayer.Left + 34;
+      imgTiro05.Top := imgPlayer.Top;
+      imgTiro05.Visible := true;
+    end
+    else if imgTiro06.Visible = false then
+    begin
+      imgTiro06.Left := imgPlayer.Left + 34;
+      imgTiro06.Top := imgPlayer.Top;
+      imgTiro06.Visible := true;
+    end
+    else if imgTiro07.Visible = false then
+    begin
+      imgTiro07.Left := imgPlayer.Left + 34;
+      imgTiro07.Top := imgPlayer.Top;
+      imgTiro07.Visible := true;
+    end
+    else if imgTiro08.Visible = false then
+    begin
+      imgTiro08.Left := imgPlayer.Left + 34;
+      imgTiro08.Top := imgPlayer.Top;
+      imgTiro08.Visible := true;
+    end
+    else if imgTiro09.Visible = false then
+    begin
+      imgTiro09.Left := imgPlayer.Left + 34;
+      imgTiro09.Top := imgPlayer.Top;
+      imgTiro09.Visible := true;
+    end
+    else if imgTiro10.Visible = false then
+    begin
+      imgTiro10.Left := imgPlayer.Left + 34;
+      imgTiro10.Top := imgPlayer.Top;
+      imgTiro10.Visible := true;
+    end;
+  end;
+end;
+
+// funcão responsável por realizar o deslocamento do tiro a partir da nave player
+procedure TfrmPrincipal.moverDisparo();
+begin
+  if (imgTiro01.Top >= 0) then
+  begin
+    if (imgTiro01.Visible = true) then
+      imgTiro01.Top := imgTiro01.Top - 8;
+  end
+  else
+  begin
+    imgTiro01.Left := imgPlayer.Left + 34;
+    imgTiro01.Top := imgPlayer.Top;
+    imgTiro01.Visible := false;
+  end;
+
+  if (imgTiro02.Top >= 0) then
+  begin
+    if (imgTiro02.Visible = true) then
+      imgTiro02.Top := imgTiro02.Top - 8;
+  end
+  else
+  begin
+    imgTiro02.Left := imgPlayer.Left + 34;
+    imgTiro02.Top := imgPlayer.Top;
+    imgTiro02.Visible := false;
+  end;
+
+  if (imgTiro03.Top >= 0) then
+  begin
+    if (imgTiro03.Visible = true) then
+      imgTiro03.Top := imgTiro03.Top - 8;
+  end
+  else
+  begin
+    imgTiro03.Left := imgPlayer.Left + 34;
+    imgTiro03.Top := imgPlayer.Top;
+    imgTiro03.Visible := false;
+  end;
+
+  if (imgTiro04.Top >= 0) then
+  begin
+    if (imgTiro04.Visible = true) then
+      imgTiro04.Top := imgTiro04.Top - 8;
+  end
+  else
+  begin
+    imgTiro04.Left := imgPlayer.Left + 34;
+    imgTiro04.Top := imgPlayer.Top;
+    imgTiro04.Visible := false;
+  end;
+
+  if (imgTiro05.Top >= 0) then
+  begin
+    if (imgTiro05.Visible = true) then
+      imgTiro05.Top := imgTiro05.Top - 8;
+  end
+  else
+  begin
+    imgTiro05.Left := imgPlayer.Left + 34;
+    imgTiro05.Top := imgPlayer.Top;
+    imgTiro05.Visible := false;
+  end;
+
+  if (imgTiro06.Top >= 0) then
+  begin
+    if (imgTiro06.Visible = true) then
+      imgTiro06.Top := imgTiro06.Top - 8;
+  end
+  else
+  begin
+    imgTiro06.Left := imgPlayer.Left + 34;
+    imgTiro06.Top := imgPlayer.Top;
+    imgTiro06.Visible := false;
+  end;
+
+  if (imgTiro07.Top >= 0) then
+  begin
+    if (imgTiro07.Visible = true) then
+      imgTiro07.Top := imgTiro07.Top - 8;
+  end
+  else
+  begin
+    imgTiro07.Left := imgPlayer.Left + 34;
+    imgTiro07.Top := imgPlayer.Top;
+    imgTiro07.Visible := false;
+  end;
+
+  if (imgTiro08.Top >= 0) then
+  begin
+    if (imgTiro08.Visible = true) then
+      imgTiro08.Top := imgTiro08.Top - 8;
+  end
+  else
+  begin
+    imgTiro08.Left := imgPlayer.Left + 34;
+    imgTiro08.Top := imgPlayer.Top;
+    imgTiro08.Visible := false;
+  end;
+
+  if (imgTiro09.Top >= 0) then
+  begin
+    if (imgTiro09.Visible = true) then
+      imgTiro09.Top := imgTiro09.Top - 8;
+  end
+  else
+  begin
+    imgTiro09.Left := imgPlayer.Left + 34;
+    imgTiro09.Top := imgPlayer.Top;
+    imgTiro09.Visible := false;
+  end;
+
+  if (imgTiro10.Top >= 0) then
+  begin
+    if (imgTiro10.Visible = true) then
+      imgTiro10.Top := imgTiro10.Top - 8;
+  end
+  else
+  begin
+    imgTiro10.Left := imgPlayer.Left + 34;
+    imgTiro10.Top := imgPlayer.Top;
+    imgTiro10.Visible := false;
+  end;
+end;
+
+// função responsável por realizar o deslocamento do espaço abaixo das naves.
+procedure TfrmPrincipal.moverEspaco();
+begin
+  if imgEspaco01.Top = 596 then
+    imgEspaco01.Top := -600
+  else
+    imgEspaco01.Top := imgEspaco01.Top + 4;
+
+  if imgEspaco02.Top = 596 then
+    imgEspaco02.Top := -600
+  else
+    imgEspaco02.Top := imgEspaco02.Top + 4;
+end;
+
+// função responsável por realizar o deslocamento player na tela.
+procedure TfrmPrincipal.moverJogador();
+begin
+  if (GetKeyState(VK_LEFT) < 0) and (imgPlayer.Left > 0) then
+    imgPlayer.Left := imgPlayer.Left - Level - 3;
+  if (GetKeyState(VK_RIGHT) < 0) and (imgPlayer.Left < 725) then
+    imgPlayer.Left := imgPlayer.Left + Level + 3;
+  if (GetKeyState(VK_UP) < 0) and (imgPlayer.Top > 0) then
+    imgPlayer.Top := imgPlayer.Top - Level - 3;
+  if (GetKeyState(VK_DOWN) < 0) and (imgPlayer.Top < 500) then
+    imgPlayer.Top := imgPlayer.Top + Level + 3;
+end;
+
+// função responsável por subtrair o shield e emitir a mensagem de game over.
+procedure TfrmPrincipal.atingido();
+begin
+  if (colisao(imgPlayer, imgEnemy01)) or (colisao(imgPlayer, imgEnemy02)) or
+    (colisao(imgPlayer, imgEnemy03)) or (colisao(imgPlayer, imgEnemy04)) or
+    (colisao(imgPlayer, imgEnemy05)) or (Alive = 10) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    barLife.Position := barLife.Position - 3;
+
+    if barLife.Position <= 60 then
+      barLife.State := pbsPaused;
+    if barLife.Position <= 30 then
+      barLife.State := pbsError;
+
+    if (barLife.Position = 0) or (Alive = 10) then
+    begin
+      tmrBatalha.Enabled := false;
+      tmrJogador.Enabled := false;
+      tmrColisao.Enabled := false;
+      tmrDisparo.Enabled := false;
+
+      ocultar();
+      tmrGameOver.Enabled := true;
+      lblHighScore.Caption := 'High Score: ' + IntToStr(Score);
+      lblGameOver.Caption := 'Game Over';
+      lblHighScore.Visible := true;
+      lblGameOver.Visible := true;
+
+      PostMessage(FindWindow(nil, 'Song'), WM_CLOSE, 0, 0);
+      WinExec('songs/Ghostbusters.exe', SW_HIDE);
+    end;
+  end;
+end;
+
+// função resposável por ocultar os componentes da tela
+procedure TfrmPrincipal.ocultar;
+begin
+  btnNewGame.Enabled := false;
+  btnNewGame.Visible := false;
+  btnQuitGame.Enabled := false;
+  btnQuitGame.Visible := false;
+  btnAbout.Enabled := false;
+  btnAbout.Visible := false;
+
+  tmrBatalha.Enabled := false;
+  tmrJogador.Enabled := false;
+  tmrColisao.Enabled := false;
+  tmrDisparo.Enabled := false;
+  tmrGameOver.Enabled := false;
+
+  barLife.Visible := false;
+  lblGameOver.Visible := false;
+  lblLife.Visible := false;
+  lblScore.Visible := false;
+  lblAlive.Visible := false;
+  lblLevel.Visible := false;
+  imgPlayer.Visible := false;
+  imgEnemy01.Visible := false;
+  imgEnemy02.Visible := false;
+  imgEnemy03.Visible := false;
+  imgEnemy04.Visible := false;
+  imgEnemy05.Visible := false;
+
+  imgTiro01.Visible := false;
+  imgTiro02.Visible := false;
+  imgTiro03.Visible := false;
+  imgTiro04.Visible := false;
+  imgTiro05.Visible := false;
+  imgTiro06.Visible := false;
+  imgTiro07.Visible := false;
+  imgTiro08.Visible := false;
+  imgTiro09.Visible := false;
+  imgTiro10.Visible := false;
+end;
+
+// Função responsável por pausar e reiniciar o game também após game over
+procedure TfrmPrincipal.recomecarJogo(Key: Char);
+begin
+
+  // Teclar enter para exibir o menu de opções na tela inicial
+  if (Key = #32) and (imgPlayer.Visible = false) and
+    (tmrGameOver.Enabled = true) and (imgLogo.Visible = true) then
+  begin
+    tmrGameOver.Enabled := false;
+    lblPressSpace.Visible := false;
+    btnNewGame.Enabled := true;
+    btnNewGame.Visible := true;
+    btnQuitGame.Enabled := true;
+    btnQuitGame.Visible := true;
+    btnAbout.Enabled := true;
+    btnAbout.Visible := true;
+    btnNewGame.SetFocus();
+  end
+
+  // Teclar enter para pausar o game durante a execução batalha
+  else if (Key = #13) and (imgPlayer.Visible = true) and
+    (tmrGameOver.Enabled = false) then
+  begin
+    tmrBatalha.Enabled := false;
+    tmrJogador.Enabled := false;
+    tmrColisao.Enabled := false;
+    tmrDisparo.Enabled := false;
+    tmrEspaco.Enabled := false;
+
+    tmrGameOver.Enabled := true;
+    lblGameOver.Visible := true;
+    lblGameOver.Caption := 'Pause';
+
+    PostMessage(FindWindow(nil, 'Song'), WM_CLOSE, 0, 0);
+  end
+
+  // Teclar enter para retomar o game durante a pausa da batalha
+  else if (Key = #13) and (imgPlayer.Visible = true) and
+    (tmrGameOver.Enabled = true)then
+  begin
+    tmrBatalha.Enabled := true;
+    tmrJogador.Enabled := true;
+    tmrColisao.Enabled := true;
+    tmrDisparo.Enabled := true;
+    tmrEspaco.Enabled := true;
+
+    tmrGameOver.Enabled := false;
+    lblGameOver.Visible := false;
+    lblGameOver.Caption := 'Continue';
+
+    WinExec('songs/Abertura.exe', SW_HIDE);
+  end
+
+  // teclar enter para voltar ao menu pricipal do game após game over
+  else if (Key = #13) and (imgPlayer.Visible = false) and
+    (tmrGameOver.Enabled = true)  and (imgLogo.Visible = false)then
+  begin
+    imgLogo.Visible := true;
+    lblHighScore.Visible := false;
+    lblGameOver.Visible := false;
+    PostMessage(FindWindow(nil, 'Song'), WM_CLOSE, 0, 0);
+    WinExec('songs/Abertura.exe', SW_HIDE);
+  end;
+end;
+
+// função resposável por criar um novo campo de batalhar e reiniciar o game.
+procedure TfrmPrincipal.novaPartida();
+begin
+  btnNewGame.Enabled := false;
+  btnNewGame.Visible := false;
+  btnQuitGame.Enabled := false;
+  btnQuitGame.Visible := false;
+  btnAbout.Enabled := false;
+  btnAbout.Visible := false;
+
+  imgLogo.Visible := false;
+  lblPressSpace.Visible := false;
+
+  imgEnemy01.Top := -220;
+  imgEnemy01.Left := Random(725);
+  imgEnemy01.Visible := true;
+  imgEnemy02.Top := -190;
+  imgEnemy02.Left := Random(725);
+  imgEnemy02.Visible := true;
+  imgEnemy03.Top := -160;
+  imgEnemy03.Left := Random(725);
+  imgEnemy03.Visible := true;
+  imgEnemy04.Top := -130;
+  imgEnemy04.Left := Random(725);
+  imgEnemy04.Visible := true;
+  imgEnemy05.Top := -100;
+  imgEnemy05.Left := Random(725);
+  imgEnemy05.Visible := true;
+  imgPlayer.Top := 500;
+  imgPlayer.Left := 363;
+  imgPlayer.Visible := true;
+
+  lblLife.Visible := true;
+  barLife.Visible := true;
+  lblScore.Visible := true;
+  lblAlive.Visible := true;
+  lblLevel.Visible := true;
+
+  tmrBatalha.Enabled := true;
+  tmrJogador.Enabled := true;
+  tmrColisao.Enabled := true;
+  tmrDisparo.Enabled := true;
+
+  tmrGameOver.Enabled := false;
+  lblGameOver.Visible := false;
+
+  imgTiro01.Visible := false;
+  imgTiro02.Visible := false;
+  imgTiro03.Visible := false;
+  imgTiro04.Visible := false;
+  imgTiro05.Visible := false;
+  imgTiro06.Visible := false;
+  imgTiro07.Visible := false;
+  imgTiro08.Visible := false;
+  imgTiro09.Visible := false;
+  imgTiro10.Visible := false;
+
+  lblScore.Caption := 'Score: 0';
+  lblAlive.Caption := 'Alive: 0';
+  lblLevel.Caption := 'Level: 1';
+  barLife.State := pbsNormal;
+  barLife.Position := 100;
+  Level := 1;
+  Score := 0;
+  Alive := 0;
+
+  PostMessage(FindWindow(nil, 'Song'), WM_CLOSE, 0, 0);
+  WinExec('songs/Abertura.exe', SW_HIDE);
+end;
+
+// função resposável por verificar se os inimigos foram atingidos por disparos
+procedure TfrmPrincipal.batalhar();
+begin
+  imgEnemy01.Top := imgEnemy01.Top + Level;
+  imgEnemy02.Top := imgEnemy02.Top + Level;
+  imgEnemy03.Top := imgEnemy03.Top + Level;
+  imgEnemy04.Top := imgEnemy04.Top + Level;
+  imgEnemy05.Top := imgEnemy05.Top + Level;
+
+  // verifica se os inimigos foram atingidos para incrementar o score
+  if ((atingir(imgTiro01, imgEnemy01)) or (atingir(imgTiro02, imgEnemy01)) or
+    (atingir(imgTiro03, imgEnemy01)) or (atingir(imgTiro04, imgEnemy01)) or
+    (atingir(imgTiro05, imgEnemy01)) or (atingir(imgTiro06, imgEnemy01)) or
+    (atingir(imgTiro07, imgEnemy01)) or (atingir(imgTiro08, imgEnemy01)) or
+    (atingir(imgTiro09, imgEnemy01)) or (atingir(imgTiro10, imgEnemy01))) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    imgEnemy01.Top := -100;
+    imgEnemy01.Left := Random(725);
+    Score := Score + 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+  end
+  else if ((atingir(imgTiro01, imgEnemy02)) or (atingir(imgTiro02, imgEnemy02))
+    or (atingir(imgTiro03, imgEnemy02)) or (atingir(imgTiro04, imgEnemy02)) or
+    (atingir(imgTiro05, imgEnemy02)) or (atingir(imgTiro06, imgEnemy02)) or
+    (atingir(imgTiro07, imgEnemy02)) or (atingir(imgTiro08, imgEnemy02)) or
+    (atingir(imgTiro09, imgEnemy02)) or (atingir(imgTiro10, imgEnemy02))) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    imgEnemy02.Top := -130;
+    imgEnemy02.Left := Random(725);
+    Score := Score + 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+  end
+  else if ((atingir(imgTiro01, imgEnemy03)) or (atingir(imgTiro02, imgEnemy03))
+    or (atingir(imgTiro03, imgEnemy03)) or (atingir(imgTiro04, imgEnemy03)) or
+    (atingir(imgTiro05, imgEnemy03)) or (atingir(imgTiro06, imgEnemy03)) or
+    (atingir(imgTiro07, imgEnemy03)) or (atingir(imgTiro08, imgEnemy03)) or
+    (atingir(imgTiro09, imgEnemy03)) or (atingir(imgTiro10, imgEnemy03))) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    imgEnemy03.Top := -160;
+    imgEnemy03.Left := Random(725);
+    Score := Score + 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+  end
+  else if ((atingir(imgTiro01, imgEnemy04)) or (atingir(imgTiro02, imgEnemy04))
+    or (atingir(imgTiro03, imgEnemy04)) or (atingir(imgTiro04, imgEnemy04)) or
+    (atingir(imgTiro05, imgEnemy04)) or (atingir(imgTiro06, imgEnemy04)) or
+    (atingir(imgTiro07, imgEnemy04)) or (atingir(imgTiro08, imgEnemy04)) or
+    (atingir(imgTiro09, imgEnemy04)) or (atingir(imgTiro10, imgEnemy04))) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    imgEnemy04.Top := -190;
+    imgEnemy04.Left := Random(725);
+    Score := Score + 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+  end
+  else if ((atingir(imgTiro01, imgEnemy05)) or (atingir(imgTiro02, imgEnemy05))
+    or (atingir(imgTiro03, imgEnemy05)) or (atingir(imgTiro04, imgEnemy05)) or
+    (atingir(imgTiro05, imgEnemy05)) or (atingir(imgTiro06, imgEnemy05)) or
+    (atingir(imgTiro07, imgEnemy05)) or (atingir(imgTiro08, imgEnemy05)) or
+    (atingir(imgTiro09, imgEnemy05)) or (atingir(imgTiro10, imgEnemy05))) then
+  begin
+    SndPlaySound('songs/EnemyHit.wav', SND_ASYNC);
+    imgEnemy05.Top := -220;
+    imgEnemy05.Left := Random(725);
+    Score := Score + 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+  end;
+
+  // Verifica se os inimigos estam no fim da tela para traze-los ao inicio
+  if imgEnemy01.Top >= 600 then
+  begin
+    imgEnemy01.Top := -100;
+    imgEnemy01.Left := Random(725);
+    Score := Score - 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+    Alive := Alive + 1;
+    lblAlive.Caption := 'Alive: ' + IntToStr(Alive);
+  end;
+  if imgEnemy02.Top >= 600 then
+  begin
+    imgEnemy02.Top := -130;
+    imgEnemy02.Left := Random(725);
+    Score := Score - 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+    Alive := Alive + 1;
+    lblAlive.Caption := 'Alive: ' + IntToStr(Alive);
+  end;
+  if imgEnemy03.Top >= 600 then
+  begin
+    imgEnemy03.Top := -160;
+    imgEnemy03.Left := Random(725);
+    Score := Score - 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+    Alive := Alive + 1;
+    lblAlive.Caption := 'Alive: ' + IntToStr(Alive);
+  end;
+  if imgEnemy04.Top >= 600 then
+  begin
+    imgEnemy04.Top := -190;
+    imgEnemy04.Left := Random(725);
+    Score := Score - 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+    Alive := Alive + 1;
+    lblAlive.Caption := 'Alive: ' + IntToStr(Alive);
+  end;
+  if imgEnemy05.Top >= 600 then
+  begin
+    imgEnemy05.Top := -220;
+    imgEnemy05.Left := Random(725);
+    Score := Score - 10;
+    lblScore.Caption := 'Score: ' + IntToStr(Score);
+    Alive := Alive + 1;
+    lblAlive.Caption := 'Alive: ' + IntToStr(Alive);
+  end;
+
+  // incrementa o level so game
+  if (Score = 500) and (Level < 2) then
+  begin
+    Level := Level + 1;
+    lblLevel.Caption := 'Level: ' + IntToStr(Level);
+  end
+  else if (Score = 1000) and (Level < 3) then
+  begin
+    Level := Level + 1;
+    lblLevel.Caption := 'Level: ' + IntToStr(Level);
+  end
+  else if (Score = 1500) and (Level < 4) then
+  begin
+    Level := Level + 1;
+    lblLevel.Caption := 'Level: ' + IntToStr(Level);
+  end
+  else if (Score = 2500) and (Level < 5) then
+  begin
+    Level := Level + 1;
+    lblLevel.Caption := 'Level: ' + IntToStr(Level);
+  end;
+end;
+
+procedure TfrmPrincipal.btnAboutClick(Sender: TObject);
+begin
+  Application.CreateForm(TfrmSobre, frmSobre);
+  frmSobre.Show;
+end;
+
+procedure TfrmPrincipal.btnNewGameClick(Sender: TObject);
+begin
+  novaPartida();
+end;
+
+procedure TfrmPrincipal.btnQuitGameClick(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  frmPrincipal.DoubleBuffered := true;
+  WinExec('songs/Abertura.exe', SW_HIDE);
+end;
+
+procedure TfrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  PostMessage(FindWindow(nil, 'Song'), WM_CLOSE, 0, 0);
+end;
+
+procedure TfrmPrincipal.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  recomecarJogo(Key);
+end;
+
+procedure TfrmPrincipal.tmrBatalhaTimer(Sender: TObject);
+begin
+  batalhar();
+end;
+
+procedure TfrmPrincipal.tmrDisparoTimer(Sender: TObject);
+begin
+  moverDisparo();
+end;
+
+procedure TfrmPrincipal.tmrEspacoTimer(Sender: TObject);
+begin
+  moverEspaco();
+end;
+
+procedure TfrmPrincipal.tmrJogadorTimer(Sender: TObject);
+begin
+  moverJogador();
+end;
+
+procedure TfrmPrincipal.tmrColisaoTimer(Sender: TObject);
+begin
+  atirar();
+  atingido();
+end;
+
+procedure TfrmPrincipal.tmrGameOverTimer(Sender: TObject);
+begin
+  if imgLogo.Visible = true then
+  begin
+    if (lblPressSpace.Visible = false) then
+      lblPressSpace.Visible := true
+    else
+      lblPressSpace.Visible := false;
+  end
+  else
+  begin
+    if (lblGameOver.Visible = false) then
+      lblGameOver.Visible := true
+    else
+      lblGameOver.Visible := false;
+  end;
+end;
+
+end.
